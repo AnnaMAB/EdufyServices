@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  edufy-pod-service:
+    build: ./EdufyPodcastService
+    container_name: edufy-podcast-service
+    depends_on:
+      - mysql-podcast
+    environment:
+      SPRING_APPLICATION_NAME: EdufyPodcastService
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-podcast:3306/podcastdb
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+    ports:
+      - "8081:8080"
+    networks:
+      - edufy-network
+
+  edufy-pod-producer-service:
+    build: ./EdufyPodProducerService
+    container_name: edufy-pod-producer-service
+    depends_on:
+      - mysql-podproducer
+    environment:
+      SPRING_APPLICATION_NAME: EdufyPodProducerService
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-podproducer:3306/podproducerdb
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+    ports:
+      - "8082:8080"
+    networks:
+      - edufy-network
+
+  edufy-pod-season-service:
+    build: ./EdufyPodSeasonService
+    container_name: edufy-pod-season-service
+    depends_on:
+      - mysql-podseason
+    environment:
+      SPRING_APPLICATION_NAME: EdufyPodSeasonService
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-podseason:3306/podseasonsdb
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+    ports:
+      - "8083:8080"
+    networks:
+      - edufy-network
+
+networks:
+  edufy-network:
+    external: true
