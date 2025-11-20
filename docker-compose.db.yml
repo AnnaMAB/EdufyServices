@@ -59,4 +59,5 @@ volumes:
 
 networks:
   edufy-network:
-    driver: bridge
+    external: true
+    name: edufy-network
